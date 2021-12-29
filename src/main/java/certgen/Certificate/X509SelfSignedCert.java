@@ -1,10 +1,9 @@
 package certgen.Certificate;
 
-import certgen.Keys.KeyPair;
 import certgen.Keys.PublicKey;
 import lombok.Getter;
-import lombok.Setter;
 
+import java.io.*;
 import java.util.Date;
 
 @Getter
@@ -31,5 +30,22 @@ public class X509SelfSignedCert {
 
     public X509SelfSignedCert() {
         this.id = count++;
+    }
+
+    public void saveToPEM() throws IOException {
+        try {
+            Writer output = null;
+            File file = new File(id + ".pem");
+            output = new BufferedWriter(new FileWriter(file));
+            System.out.println(this);
+            output.close();
+        } catch (Exception e) {
+            System.out.println("Could not create file");
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "X509 Certificate ";
     }
 }
