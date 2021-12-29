@@ -2,6 +2,7 @@ package certgen.Certificate;
 
 import lombok.Getter;
 
+import java.util.Base64;
 import java.util.Date;
 
 @Getter
@@ -50,6 +51,7 @@ public class X509SelfSignedCert {
     public String toString() {
         return "-----BEGIN CERTIFICATE-----\n"
                 + id + "\n"
+                + Base64.getEncoder().encodeToString(publicKey) + "\n"
                 + "-----END CERTIFICATE-----\n";
     }
 }
