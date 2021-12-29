@@ -28,16 +28,17 @@ public class X509SelfSignedCert {
     private String dirName;
     private String otherName;
 
-    public X509SelfSignedCert() {
+    public X509SelfSignedCert() throws IOException {
         this.id = count++;
+        this.saveToPEM();
     }
 
-    public void saveToPEM() throws IOException {
+    private void saveToPEM() throws IOException {
         try {
             Writer output = null;
             File file = new File(id + ".pem");
             output = new BufferedWriter(new FileWriter(file));
-            System.out.println(this);
+            output.write(String.valueOf(this));
             output.close();
         } catch (Exception e) {
             System.out.println("Could not create file");
@@ -46,6 +47,8 @@ public class X509SelfSignedCert {
 
     @Override
     public String toString() {
-        return "X509 Certificate ";
+        return "-----BEGIN CERTIFICATE-----\n"
+                + id + "\n"
+                + "-----END CERTIFICATE-----\n";
     }
 }

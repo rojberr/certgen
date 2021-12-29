@@ -2,6 +2,7 @@ package certgen;
 
 import certgen.Certificate.X509SelfSignedCert;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -41,10 +42,12 @@ public class Main {
                     int id = 0;
                     try {
                         id = scanner.nextInt();
-                        if (id > 0 && id < certList.size()) {
+                        if (id < 0 || id >= certList.size()) {
                             throw new Exception();
                         }
                         certList.remove(id);
+                        File deleteFile = new File(id + ".pem");
+                        deleteFile.delete();
                     } catch (Exception e) {
                         System.out.println("Please state a valid number within the list!\n");
                     }

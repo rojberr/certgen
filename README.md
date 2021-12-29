@@ -12,3 +12,12 @@ in the process of creation for a user unskilled in programming.
 
 ## Use
 
+Run the program and choose one of the following options depending on your needs:
+1 - Create a new cert and add it to the list
+2 - Show the actual list
+3 - Search for certificates
+4 - Delete certificate with ID
+5 - Exit program
+
+The program will save and delete new .pem files in the project root folder!
+
