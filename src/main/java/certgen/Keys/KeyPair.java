@@ -10,7 +10,7 @@ public class KeyPair {
         this.privateKey = new PrivateKey(privateKey);
     }
 
-    byte[] getPublic() {
+    public byte[] getPublic() {
         return publicKey.getPublicKey();
     }
 
