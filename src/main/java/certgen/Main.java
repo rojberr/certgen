@@ -37,13 +37,19 @@ public class Main {
                     System.out.println();
                     break;
                 case "3":
-                    System.out.println("SEARCH\n");
+                    System.out.println("Search for certificate with id: \n");
+                    try {
+                        String searched = scanner.nextLine();
+                        List<X509SelfSignedCert> founds = searchFor(certList, searched);
+                        System.out.println(founds);
+                    } catch (Exception e) {
+                        System.out.println("Please state a valid search term!\n");
+                    }
                     break;
                 case "4":
                     System.out.println("Which cert should be removed?");
-                    int id = 0;
                     try {
-                        id = scanner.nextInt();
+                        int id = scanner.nextInt();
                         if (id < 0 || id >= certList.size()) {
                             throw new Exception();
                         }
@@ -61,5 +67,15 @@ public class Main {
                     System.out.println("Please type in a valid number! :)\n");
             }
         }
+    }
+
+    public static List<X509SelfSignedCert> searchFor(List<X509SelfSignedCert> certList, String searched) {
+        List<X509SelfSignedCert> founds = new ArrayList<>();
+        for (int i = 0; i < certList.size(); i++) {
+            if ( certList.get(i).toString().contains(searched)) {
+                founds.add(certList.get(i));
+            }
+        }
+        return founds;
     }
 }
