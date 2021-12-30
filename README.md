@@ -23,3 +23,7 @@ The program will save and delete new .pem files in the project root folder!
 
 ## TODO
 1) Migrate to Java FX
+
+## UML
+
+![UML graph by rojberr](UML.jpg)

@@ -2,6 +2,7 @@ package certgen.Keys;
 
 public class KeyPair {
 
+
     private final PublicKey publicKey;
     private final PrivateKey privateKey;
 
