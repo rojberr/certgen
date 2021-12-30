@@ -1,6 +1,6 @@
 package certgen;
 
-import certgen.Certificate.CertGen;
+import certgen.Certificate.X509CertGen;
 import certgen.Certificate.X509SelfSignedCert;
 
 import java.io.File;
@@ -27,8 +27,8 @@ public class Main {
 
             switch (element) {
                 case "1":
-                    CertGen certGen = new CertGen();
-                    certList.add(certGen.generate());
+                    X509CertGen x509CertGen = new X509CertGen();
+                    certList.add(x509CertGen.generate());
                     System.out.println("A certificate was added!\n");
                     break;
                 case "2":
