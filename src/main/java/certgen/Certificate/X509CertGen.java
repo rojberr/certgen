@@ -5,7 +5,10 @@ import certgen.Keys.KeyPairGeneratorRSA;
 import certgen.Keys.PublicKey;
 import lombok.Data;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.Writer;
 import java.util.Date;
 
 @Data
@@ -28,7 +31,7 @@ public class X509CertGen implements CertGen {
     private String otherName;
 
     @Override
-    public X509SelfSignedCert generate() throws IOException {
+    public X509SelfSignedCert generate() {
         KeyPairGeneratorRSA keyPairGeneratorRSA = new KeyPairGeneratorRSA();
         KeyPair keyPair = keyPairGeneratorRSA.generateKeyPair();
         X509SelfSignedCert cert = new X509SelfSignedCert(validFrom, validTill, keyPair.getPublic(), keyPairGeneratorRSA.getAlgorithm(), country, state, locality, organization, dns, ip, url, email, rid, dirName, otherName);
@@ -36,7 +39,7 @@ public class X509CertGen implements CertGen {
         return cert;
     }
 
-    private void saveToPEM(X509SelfSignedCert cert) throws IOException {
+    private void saveToPEM(X509SelfSignedCert cert) {
         try {
             Writer output = null;
             File file = new File(cert.getId() + ".pem");

@@ -4,7 +4,7 @@ import java.security.NoSuchAlgorithmException;
 
 public interface KeyPairGeneratorInterface {
 
-    public KeyPair generateKeyPair() throws NoSuchAlgorithmException;
+    KeyPair generateKeyPair() throws NoSuchAlgorithmException;
 
-    public String getAlgorithm();
+    String getAlgorithm();
 }
