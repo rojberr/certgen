@@ -21,3 +21,7 @@ Run the program and choose one of the following options depending on your needs:
 
 The program will save and delete new .pem files in the project root folder!
 
+## TODO
+1) Develop full cert toString
+2) 
+3) Migrate to Java FX
