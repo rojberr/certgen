@@ -18,7 +18,7 @@ public class X509CertGen implements CertGen {
     private Date validTill;
     private PublicKey publicKey;
     private String signAlgName;
-    private String country;
+    private Country country;
     private String state;
     private String locality;
     private String organization;
