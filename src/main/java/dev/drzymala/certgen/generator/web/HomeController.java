@@ -1,15 +1,18 @@
 package dev.drzymala.certgen.generator.web;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
-@RestController
+@Controller
 @RequestMapping("/")
 public class HomeController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Object getIndex() {
+    public String index() {
         return "index";
     }
 }
