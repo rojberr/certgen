@@ -15,4 +15,10 @@ public class HomeController {
     public String index() {
         return "index";
     }
+
+    @GetMapping("/generateX509")
+    @ResponseStatus(HttpStatus.OK)
+    public HttpStatus generateX509() {
+        return HttpStatus.BAD_REQUEST;
+    }
 }
