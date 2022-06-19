@@ -33,3 +33,12 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+compileJava {
+	options.release = 17
+}
+
+java {
+	withJavadocJar()
+	withSourcesJar()
+}

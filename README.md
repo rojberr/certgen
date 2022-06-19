@@ -27,3 +27,9 @@ The program will save and delete new .pem files in the project root folder!
 ## UML
 
 ![UML graph by rojberr](UML.jpg)
+
+
+
+docker build . -t certgen-docker1
+
+docker run -p 8081:8081 certgen-docker1 -name certgen
