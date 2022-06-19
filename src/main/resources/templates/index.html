@@ -21,18 +21,27 @@
 
 <div class="columns is-mobile is-centered">
     <div class="column is-half">
-        <div class="container"></div>
-        <div class="field pt-3">
-            <label class="label">Version</label>
-            <div class="control">
-                <input class="input" type="text" placeholder="3 (0x2)">
-            </div>
-        </div>
         <form action="#" th:action="@{/generateX509}" method="get">
+            <div class="container"></div>
+            <div class="field pt-3">
+                <label class="label">Version</label>
+                <div class="control">
+                    <input class="input" type="text" th:name="version" placeholder="3 (0x2)">
+                </div>
+            </div>
+            <div class="field pt-3">
+                <label class="label">RSA Key Size</label>
+                <div class="control">
+                    <input class="input" type="text" th:name="rsaKeySize" value="2048"
+                           placeholder="2048">
+                </div>
+            </div>
             <div class="field margin-top">
-                <label class="label">Username</label>
+                <label class="label">Common Name</label>
                 <div class="control has-icons-left has-icons-right">
-                    <input class="input is-success" type="text" placeholder="Text input" value="bulma">
+                    <input class="input is-success" type="text" th:name="commonName"
+                           placeholder="Example SHA2 High Assurance Server CA"
+                           value="Example SHA2 High Assurance Server CA">
                     <span class="icon is-small is-left">
       <i class="fas fa-user"></i>
     </span>
@@ -42,7 +51,33 @@
                 </div>
                 <p class="help is-success">This username is available</p>
             </div>
-
+            <div class="field pt-3">
+                <label class="label">Country</label>
+                <div class="control">
+                    <input class="input" type="text" th:name="country" value="DE"
+                           placeholder="DE">
+                </div>
+            </div>
+            <div class="field pt-3">
+                <label class="label">Country</label>
+                <div class="control">
+                    <input class="input" type="date" th:name="validFrom">
+                </div>
+            </div>
+            <div class="field pt-3">
+                <label class="label">Country</label>
+                <div class="control">
+                    <input class="input" type="date" th:name="validTill">
+                </div>
+            </div>
+            <div class="field pt-3">
+                <label class="label">Distinguished Name: DN</label>
+                <div class="control">
+                    <input class="input" type="text" th:name="distinguishedName"
+                           value="Example SHA2 High Assurance Server CA"
+                           placeholder="Example SHA2 High Assurance Server CA">
+                </div>
+            </div>
             <div class="field">
                 <label class="label">Email</label>
                 <div class="control has-icons-left has-icons-right">
@@ -56,7 +91,6 @@
                 </div>
                 <p class="help is-danger">This email is invalid</p>
             </div>
-
             <div class="field">
                 <label class="label">Subject</label>
                 <div class="control">
@@ -68,14 +102,12 @@
                     </div>
                 </div>
             </div>
-
             <div class="field">
                 <label class="label">Message</label>
                 <div class="control">
                     <textarea class="textarea" placeholder="Textarea"></textarea>
                 </div>
             </div>
-
             <div class="field">
                 <div class="control">
                     <label class="checkbox">
@@ -84,7 +116,6 @@
                     </label>
                 </div>
             </div>
-
             <div class="field">
                 <div class="control">
                     <label class="radio">
@@ -97,7 +128,6 @@
                     </label>
                 </div>
             </div>
-
             <div class="field is-grouped">
                 <div class="control">
                     <button class="button is-link" type="submit">Submit</button>
@@ -109,6 +139,7 @@
         </form>
     </div>
 </div>
-
 </body>
 </html>
+
+<!--https://www.elastic.co/guide/en/ecs/master/ecs-x509.html-->

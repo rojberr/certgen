@@ -47,48 +47,30 @@ public class GenerateService implements GenerateUseCase {
 
     @Override
     @SneakyThrows
-    public void generate() {
+    public void generate(
+            int RsaKeySize,
+            String commonName,
+            Date validFrom,
+            Date validTill
+    ) {
+        if (validFrom == null) {
+            validFrom = Date.from(LocalDate.of(2000, 1, 1).atStartOfDay(ZoneOffset.UTC).toInstant());
+        }
+        if (validTill == null) {
+            validTill = Date.from(LocalDate.of(2035, 1, 1).atStartOfDay(ZoneOffset.UTC).toInstant());
+        }
 
-        KeyPair keypair = generateRSAKeyPair();
-        X509CertificateHolder holder = generateV3Certificate(keypair);
-
+        KeyPair keypair = generateRSAKeyPair(RsaKeySize);
+        X509CertificateHolder holder = generateV3Certificate(keypair, commonName,
+                validFrom, validTill);
         saveToDerFile(holder);
         saveToPemFile(holder);
     }
 
-    private void saveToPemFile(X509CertificateHolder holder) throws IOException, CertificateException {
-
-        final StringWriter writer = new StringWriter();
-        final JcaPEMWriter pemWriter = new JcaPEMWriter(writer);
-
-        pemWriter.writeObject(new JcaX509CertificateConverter().getCertificate(holder));
-        pemWriter.flush();
-        pemWriter.close();
-        saveBytesToFile(writer.toString().getBytes(), "certificate.pem");
-    }
-
-    private void saveToDerFile(X509CertificateHolder holder) throws IOException {
-
-        saveBytesToFile(holder.getEncoded(), "certificate.der");
-    }
-
-    private void saveBytesToFile(byte[] bytes, String filename) throws IOException {
-
-        File outputFile = new File(CERTIFICATES_FILES_PATH + "/" + filename);
-        FileOutputStream outputStream = new FileOutputStream(outputFile);
-        outputStream.write(bytes);
-        outputStream.close();
-    }
-
-    public KeyPair generateRSAKeyPair()
-            throws Exception {
-
-        KeyPairGenerator keypairGen = KeyPairGenerator.getInstance(KEY_ALGORITHM);
-        keypairGen.initialize(RSA_KEY_SIZE, new SecureRandom());
-        return keypairGen.generateKeyPair();
-    }
-
-    public X509CertificateHolder generateV3Certificate(KeyPair keyPair) throws IOException, OperatorCreationException {
+    public X509CertificateHolder generateV3Certificate(
+            KeyPair keyPair,
+            String commonName, Date validFrom, Date validTill
+    ) throws IOException, OperatorCreationException {
 
         SecureRandom random = new SecureRandom();
         byte[] id = new byte[20];
@@ -97,15 +79,15 @@ public class GenerateService implements GenerateUseCase {
 
         // Create subject
         X500Name subject = new X500NameBuilder(BCStyle.INSTANCE)
-                .addRDN(BCStyle.CN, "stackoverflow.com")
+                .addRDN(BCStyle.CN, commonName)
                 .build();
 
         // Fill certificate fields
         X509v3CertificateBuilder certificate = new JcaX509v3CertificateBuilder(
                 subject,
                 serial,
-                Date.from(LocalDate.of(2000, 1, 1).atStartOfDay(ZoneOffset.UTC).toInstant()),
-                Date.from(LocalDate.of(2035, 1, 1).atStartOfDay(ZoneOffset.UTC).toInstant()),
+                validFrom,
+                validTill,
                 subject,
                 keyPair.getPublic());
         certificate.addExtension(Extension.subjectKeyIdentifier, false, id);
@@ -132,5 +114,37 @@ public class GenerateService implements GenerateUseCase {
         X509CertificateHolder holder = certificate.build(signer);
 
         return holder;
+    }
+
+    private void saveToPemFile(X509CertificateHolder holder) throws IOException, CertificateException {
+
+        final StringWriter writer = new StringWriter();
+        final JcaPEMWriter pemWriter = new JcaPEMWriter(writer);
+
+        pemWriter.writeObject(new JcaX509CertificateConverter().getCertificate(holder));
+        pemWriter.flush();
+        pemWriter.close();
+        saveBytesToFile(writer.toString().getBytes(), "certificate.pem");
+    }
+
+    private void saveToDerFile(X509CertificateHolder holder) throws IOException {
+
+        saveBytesToFile(holder.getEncoded(), "certificate.der");
+    }
+
+    private void saveBytesToFile(byte[] bytes, String filename) throws IOException {
+
+        File outputFile = new File(CERTIFICATES_FILES_PATH + "/" + filename);
+        FileOutputStream outputStream = new FileOutputStream(outputFile);
+        outputStream.write(bytes);
+        outputStream.close();
+    }
+
+    public KeyPair generateRSAKeyPair(int RsaKeySize)
+            throws Exception {
+
+        KeyPairGenerator keypairGen = KeyPairGenerator.getInstance(KEY_ALGORITHM);
+        keypairGen.initialize(RsaKeySize, new SecureRandom());
+        return keypairGen.generateKeyPair();
     }
 }
