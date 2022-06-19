@@ -10,13 +10,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/generate")
+@RequestMapping
 public class GenerateController {
 
     private final GenerateUseCase generator;
 
-    @GetMapping
+    @GetMapping("/generateX509")
     @ResponseStatus(HttpStatus.OK)
-    public void findAntPath() {
+    public HttpStatus generateX509() {
+        generator.generate();
+        return HttpStatus.OK;
     }
 }
