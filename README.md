@@ -33,3 +33,11 @@ The program will save and delete new .pem files in the project root folder!
 docker build . -t certgen-docker1
 
 docker run -p 8081:8081 certgen-docker1 -name certgen
+
+
+## Running Jenkins
+
+`./gradlew docker dockerRun`
+
+## Need further support?
+Contact me if you need help at rojberr@outlook.com .
