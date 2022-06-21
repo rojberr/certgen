@@ -1,6 +1,6 @@
 # CertGen
 
-This is a Java Certificate Generator tool.  
+This is a Java Certificate Generator tool using Bouncy Castles library.
 
 ![Photo by Ekrulila from Pexels](pexels-certificate-2292837.jpg)
 
@@ -10,34 +10,46 @@ because right now this may be a little of a hassle.
 It is easy to store and manage certificates using Java keystore tool, but this one helps
 in the process of creation for a user unskilled in programming.
 
-## Use
+## Usage
 
-Run the program and choose one of the following options depending on your needs:
-1 - Create a new cert and add it to the list
-2 - Show the actual list
-3 - Search for certificates
-4 - Delete certificate with ID
-5 - Exit program
+[Install Docker](https://docs.docker.com/get-docker/) on your system and build an image by typing: 
 
-The program will save and delete new .pem files in the project root folder!
+> docker build . -t certgen-docker1  
 
-## TODO
-1) Migrate to Java FX
+Then run the created Docker image by typing:
 
-## UML
+> docker run -p 8081:8081 certgen-docker1 -name certgen
 
-![UML graph by rojberr](UML.jpg)
+From now on a self hosted API should be running on your system.
 
+To create a X509 certificate use a simple webpage under:
+> http://localhost:8081/generateX509
 
+or send an http API request as follows:
+> http://localhost:8081/generateX509?
+> version=v3&
+> rsaKeySize=2048&
+> commonName=Example+name&
+> country=DE&
+> validFrom=1011-01-01&
+> validTill=1010-01-01&
+> distinguishedName=...
 
-docker build . -t certgen-docker1
-
-docker run -p 8081:8081 certgen-docker1 -name certgen
-
+The program will save created .pem and .der files in the project root folder!
 
 ## Running Jenkins
 
-`./gradlew docker dockerRun`
+To run Jenkins Docker container and do the tests automatically you can use my other repo:
+
+`git clone https://github.com/rojberr/build-your-repo-with-jenkins-container.git`
+
+`cd build-your-repo-with-jenkins-container`
+
+`git checkout poject/rojberr/certgen`
+
+`./gradlew build docker dockerRun`
+
+This will create preconfigured Jenkins container and you will be able to access it under localhost:8081 and see test results.
 
 ## Need further support?
 Contact me if you need help at rojberr@outlook.com .

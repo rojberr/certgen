@@ -5,8 +5,6 @@ plugins {
     id 'java-library'
 }
 
-project.version = scmVersion.version
-
 group = 'dev.drzymala'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
