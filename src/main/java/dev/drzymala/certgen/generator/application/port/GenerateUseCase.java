@@ -1,13 +1,22 @@
 package dev.drzymala.certgen.generator.application.port;
 
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.math.BigDecimal;
 import java.util.Date;
 
 public interface GenerateUseCase {
 
     void generate(
-            int RsaKeySize,
-            String commonName,
+            String version,
+            BigDecimal serialNumber,
+            String signatureAlgorithm,
+            int keySize,
+            String signatureHashAlgorithm,
+            String issuer,
             Date validFrom,
-            Date validTill
+            Date validTill,
+            String subject
     );
 }

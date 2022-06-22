@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -48,11 +49,16 @@ public class GenerateService implements GenerateUseCase {
     @Override
     @SneakyThrows
     public void generate(
-            int RsaKeySize,
-            String commonName,
+            String version,
+            BigDecimal serialNumber,
+            String signatureAlgorithm,
+            int keySize,
+            String signatureHashAlgorithm,
+            String issuer,
             Date validFrom,
-            Date validTill
-    ) {
+            Date validTill,
+            String subject) {
+
         if (validFrom == null) {
             validFrom = Date.from(LocalDate.of(2000, 1, 1).atStartOfDay(ZoneOffset.UTC).toInstant());
         }
@@ -60,57 +66,69 @@ public class GenerateService implements GenerateUseCase {
             validTill = Date.from(LocalDate.of(2035, 1, 1).atStartOfDay(ZoneOffset.UTC).toInstant());
         }
 
-        KeyPair keypair = generateRSAKeyPair(RsaKeySize);
-        X509CertificateHolder holder = generateV3Certificate(keypair, commonName,
-                validFrom, validTill);
+        KeyPair keypair = generateRSAKeyPair(keySize);
+
+        X509CertificateHolder holder = generateV3Certificate(
+                keypair,
+                serialNumber,
+                signatureAlgorithm,
+                signatureHashAlgorithm,
+                issuer,
+                validFrom,
+                validTill,
+                subject);
+
         saveToDerFile(holder);
         saveToPemFile(holder);
     }
 
     public X509CertificateHolder generateV3Certificate(
             KeyPair keyPair,
-            String commonName, Date validFrom, Date validTill
-    ) throws IOException, OperatorCreationException {
+            BigDecimal serialNumber,
+            String signatureAlgorithm,
+            String signatureHashAlgorithm,
+            String issuer,
+            Date validFrom,
+            Date validTill,
+            String subject) throws IOException, OperatorCreationException {
 
         SecureRandom random = new SecureRandom();
         byte[] id = new byte[20];
         random.nextBytes(id);
         BigInteger serial = new BigInteger(160, random);
 
-        // Create subject
-        X500Name subject = new X500NameBuilder(BCStyle.INSTANCE)
-                .addRDN(BCStyle.CN, commonName)
+        X500Name x509Issuer = new X500NameBuilder(BCStyle.INSTANCE)
+                .addRDN(BCStyle.CN, issuer)
+                .build();
+
+        X500Name x509Subject = new X500NameBuilder(BCStyle.INSTANCE)
+                .addRDN(BCStyle.CN, subject)
                 .build();
 
         // Fill certificate fields
         X509v3CertificateBuilder certificate = new JcaX509v3CertificateBuilder(
-                subject,
+                x509Issuer,
                 serial,
                 validFrom,
                 validTill,
-                subject,
+                x509Subject,
                 keyPair.getPublic());
-        certificate.addExtension(Extension.subjectKeyIdentifier, false, id);
-        certificate.addExtension(Extension.authorityKeyIdentifier, false, id);
+
         BasicConstraints constraints = new BasicConstraints(true);
-        certificate.addExtension(
-                Extension.basicConstraints,
-                true,
-                constraints.getEncoded());
         KeyUsage usage = new KeyUsage(KeyUsage.keyCertSign | KeyUsage.digitalSignature);
-        certificate.addExtension(Extension.keyUsage, false, usage.getEncoded());
         ExtendedKeyUsage usageEx = new ExtendedKeyUsage(new KeyPurposeId[]{
                 KeyPurposeId.id_kp_serverAuth,
                 KeyPurposeId.id_kp_clientAuth
         });
-        certificate.addExtension(
-                Extension.extendedKeyUsage,
-                false,
-                usageEx.getEncoded());
+
+        certificate.addExtension(Extension.basicConstraints, true, constraints.getEncoded());
+        certificate.addExtension(Extension.subjectKeyIdentifier, false, id);
+        certificate.addExtension(Extension.authorityKeyIdentifier, false, id);
+        certificate.addExtension(Extension.keyUsage, false, usage.getEncoded());
+        certificate.addExtension(Extension.extendedKeyUsage, false, usageEx.getEncoded());
 
         // build BouncyCastle certificate
-        ContentSigner signer = new JcaContentSignerBuilder(SIGNATURE_ALGORITHM)
-                .build(keyPair.getPrivate());
+        ContentSigner signer = new JcaContentSignerBuilder(SIGNATURE_ALGORITHM).build(keyPair.getPrivate());
         X509CertificateHolder holder = certificate.build(signer);
 
         return holder;

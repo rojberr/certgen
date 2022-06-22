@@ -53,3 +53,5 @@ This will create preconfigured Jenkins container and you will be able to access 
 
 ## Need further support?
 Contact me if you need help at rojberr@outlook.com .
+
+I'am using hexagonal architecture for Java class organization.

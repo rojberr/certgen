@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="/styles/main.css">
 </head>
 <body>
+
+<!-- Header -->
 <section class="hero is-link">
     <div class="hero-body">
         <p class="title">
@@ -19,125 +21,214 @@
     </div>
 </section>
 
+<!-- Form -->
 <div class="columns is-mobile is-centered">
     <div class="column is-half">
         <form action="#" th:action="@{/generateX509}" method="get">
             <div class="container"></div>
+
+            <!-- Version - this tool allows only v3 X509 for now - field disabled -->
             <div class="field pt-3">
-                <label class="label">Version</label>
+                <label class="label">Version (only V3 for now)</label>
                 <div class="control">
-                    <input class="input" type="text" th:name="version" placeholder="3 (0x2)">
+                    <input class="input" type="text" th:name="version" placeholder="3 (0x2)" disabled>
                 </div>
             </div>
+
+            <!-- Serial number -->
             <div class="field pt-3">
-                <label class="label">RSA Key Size</label>
+                <label class="label">Serial number</label>
                 <div class="control">
-                    <input class="input" type="text" th:name="rsaKeySize" value="2048"
-                           placeholder="2048">
+                    <input class="input" type="text" th:name="serialNumber" value="0e7d51c672be51c2">
                 </div>
             </div>
-            <div class="field margin-top">
-                <label class="label">Common Name</label>
-                <div class="control has-icons-left has-icons-right">
-                    <input class="input is-success" type="text" th:name="commonName"
-                           placeholder="Example SHA2 High Assurance Server CA"
-                           value="Example SHA2 High Assurance Server CA">
-                    <span class="icon is-small is-left">
-      <i class="fas fa-user"></i>
-    </span>
-                    <span class="icon is-small is-right">
-      <i class="fas fa-check"></i>
-    </span>
-                </div>
-                <p class="help is-success">This username is available</p>
-            </div>
+
+            <!-- Signature algorithm - this tool allows only RSA for now - field disabled -->
             <div class="field pt-3">
-                <label class="label">Country</label>
+                <label class="label">Signature algorithm (only sha256RSA for now)</label>
                 <div class="control">
-                    <input class="input" type="text" th:name="country" value="DE"
-                           placeholder="DE">
+                    <input class="input" type="text" th:name="signatureAlgorithm" placeholder="sha256RSA" disabled>
                 </div>
             </div>
+
+            <!-- Key Size -->
             <div class="field pt-3">
-                <label class="label">Country</label>
+                <label class="label">Key Size</label>
+                <div class="control">
+                    <input class="input" type="text" th:name="keySize" value="2048">
+                </div>
+            </div>
+
+            <!-- Signature HASH algorithm - this tool allows only sha256 for now - field disabled -->
+            <div class="field pt-3">
+                <label class="label">Signature HASH algorithm (only sha256 for now)</label>
+                <div class="control">
+                    <input class="input" type="text" th:name="signatureHashAlgorithm" placeholder="sha256" disabled>
+                </div>
+            </div>
+
+            <!-- Issuer -->
+            <div class="field pt-3">
+                <label class="label">Issuer</label>
+                <div class="control">
+                    <input class="input" type="text" th:name="issuer" placeholder="CN = RootCA, O = Test"
+                           value="CN = RootCA, O = Test">
+                </div>
+            </div>
+
+            <!-- Valid from -->
+            <div class="field pt-3">
+                <label class="label">Valid from</label>
                 <div class="control">
                     <input class="input" type="date" th:name="validFrom">
                 </div>
             </div>
+
+            <!-- Valid till -->
             <div class="field pt-3">
-                <label class="label">Country</label>
+                <label class="label">Valid till</label>
                 <div class="control">
                     <input class="input" type="date" th:name="validTill">
                 </div>
             </div>
+
+            <!-- Subject -->
             <div class="field pt-3">
-                <label class="label">Distinguished Name: DN</label>
-                <div class="control">
-                    <input class="input" type="text" th:name="distinguishedName"
-                           value="Example SHA2 High Assurance Server CA"
-                           placeholder="Example SHA2 High Assurance Server CA">
-                </div>
-            </div>
-            <div class="field">
-                <label class="label">Email</label>
-                <div class="control has-icons-left has-icons-right">
-                    <input class="input is-danger" type="email" placeholder="Email input" value="hello@">
-                    <span class="icon is-small is-left">
-      <i class="fas fa-envelope"></i>
-    </span>
-                    <span class="icon is-small is-right">
-      <i class="fas fa-exclamation-triangle"></i>
-    </span>
-                </div>
-                <p class="help is-danger">This email is invalid</p>
-            </div>
-            <div class="field">
                 <label class="label">Subject</label>
                 <div class="control">
-                    <div class="select">
-                        <select>
-                            <option>Select dropdown</option>
-                            <option>With options</option>
-                        </select>
-                    </div>
+                    <input class="input" type="text" th:name="subject" value="E = test-user1-without-subjaltname@bonelabs.com
+CN = Test User 1 Without SubjAltName
+O = Zertificon Test"
+                           placeholder="E = test-user1-without-subjaltname@bonelabs.com
+CN = Test User 1 Without SubjAltName
+O = Zertificon Test">
                 </div>
             </div>
-            <div class="field">
-                <label class="label">Message</label>
+
+            <!-- Basic Constraints -->
+            <div class="field pt-3">
+                <label class="label">Basic Constraints</label>
                 <div class="control">
-                    <textarea class="textarea" placeholder="Textarea"></textarea>
+                    <input class="input" type="text" th:name="basicConstraints" value="Subject Type=End Entity
+Path Length Constraint=None">
                 </div>
             </div>
-            <div class="field">
+
+            <!-- Key Usage -->
+            <div class="field pt-3">
+                <label class="label">Key Usage</label>
                 <div class="control">
-                    <label class="checkbox">
-                        <input type="checkbox">
-                        I agree to the <a href="#">terms and conditions</a>
-                    </label>
+                    <input class="input" type="text" th:name="keyUsage" value="Digital Signature, Key Encipherment (a0)">
                 </div>
             </div>
-            <div class="field">
-                <div class="control">
-                    <label class="radio">
-                        <input type="radio" name="question">
-                        Yes
-                    </label>
-                    <label class="radio">
-                        <input type="radio" name="question">
-                        No
-                    </label>
-                </div>
-            </div>
+
+<!--            <div class="field margin-top">-->
+<!--                <label class="label">Common Name</label>-->
+<!--                <div class="control has-icons-left has-icons-right">-->
+<!--                    <input class="input is-success" type="text" th:name="commonName"-->
+<!--                           placeholder="Example SHA2 High Assurance Server CA"-->
+<!--                           value="Example SHA2 High Assurance Server CA">-->
+<!--                    <span class="icon is-small is-left">-->
+<!--      <i class="fas fa-user"></i>-->
+<!--    </span>-->
+<!--                    <span class="icon is-small is-right">-->
+<!--      <i class="fas fa-check"></i>-->
+<!--    </span>-->
+<!--                </div>-->
+<!--                <p class="help is-success">This username is available</p>-->
+<!--            </div>-->
+
+
+<!--            <div class="field pt-3">-->
+<!--                <label class="label">Country</label>-->
+<!--                <div class="control">-->
+<!--                    <input class="input" type="text" th:name="country" value="DE"-->
+<!--                           placeholder="DE">-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            -->
+<!--            <div class="field pt-3">-->
+<!--                <label class="label">Distinguished Name: DN</label>-->
+<!--                <div class="control">-->
+<!--                    <input class="input" type="text" th:name="distinguishedName"-->
+<!--                           value="Example SHA2 High Assurance Server CA"-->
+<!--                           placeholder="Example SHA2 High Assurance Server CA">-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            -->
+<!--            <div class="field">-->
+<!--                <label class="label">Email</label>-->
+<!--                <div class="control has-icons-left has-icons-right">-->
+<!--                    <input class="input is-danger" type="email" placeholder="Email input" value="hello@">-->
+<!--                    <span class="icon is-small is-left">-->
+<!--      <i class="fas fa-envelope"></i>-->
+<!--    </span>-->
+<!--                    <span class="icon is-small is-right">-->
+<!--      <i class="fas fa-exclamation-triangle"></i>-->
+<!--    </span>-->
+<!--                </div>-->
+<!--                <p class="help is-danger">This email is invalid</p>-->
+<!--            </div>-->
+<!--            <div class="field">-->
+<!--                <label class="label">Subject</label>-->
+<!--                <div class="control">-->
+<!--                    <div class="select">-->
+<!--                        <select>-->
+<!--                            <option>Select dropdown</option>-->
+<!--                            <option>With options</option>-->
+<!--                        </select>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+
+
+<!--            <div class="field">-->
+<!--                <label class="label">Message</label>-->
+<!--                <div class="control">-->
+<!--                    <textarea class="textarea" placeholder="Textarea"></textarea>-->
+<!--                </div>-->
+<!--            </div>-->
+
+
+<!--            <div class="field">-->
+<!--                <div class="control">-->
+<!--                    <label class="checkbox">-->
+<!--                        <input type="checkbox">-->
+<!--                        I agree to the <a href="#">terms and conditions</a>-->
+<!--                    </label>-->
+<!--                </div>-->
+<!--            </div>-->
+
+
+<!--            <div class="field">-->
+<!--                <div class="control">-->
+<!--                    <label class="radio">-->
+<!--                        <input type="radio" name="question">-->
+<!--                        Yes-->
+<!--                    </label>-->
+<!--                    <label class="radio">-->
+<!--                        <input type="radio" name="question">-->
+<!--                        No-->
+<!--                    </label>-->
+<!--                </div>-->
+<!--            </div>-->
+
+            <!-- Submit and cancel buttons -->
             <div class="field is-grouped">
                 <div class="control">
                     <button class="button is-link" type="submit">Submit</button>
                 </div>
                 <div class="control">
-                    <button class="button is-link is-light">Cancel</button>
+                    <button class="button is-link is-light" onclick="window.location.reload();">Cancel</button>
                 </div>
             </div>
+
         </form>
+
     </div>
+
 </div>
 </body>
 </html>
