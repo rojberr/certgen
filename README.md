@@ -51,6 +51,11 @@ To run Jenkins Docker container and do the tests automatically you can use my ot
 
 This will create preconfigured Jenkins container and you will be able to access it under localhost:8081 and see test results.
 
+## Swagger - API Documentation
+
+A dependency was added that creates Swagger API page automatically. To access it go to:
+`http://localhost:8081/swagger-ui.html`
+
 ## Need further support?
 Contact me if you need help at rojberr@outlook.com .
 
