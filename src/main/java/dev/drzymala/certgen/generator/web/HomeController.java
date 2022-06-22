@@ -7,12 +7,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping
 public class HomeController {
 
-    @GetMapping
+    @GetMapping("/")
     @ResponseStatus(HttpStatus.OK)
     public String index() {
         return "index";
+    }
+
+    @GetMapping("/created")
+    @ResponseStatus(HttpStatus.OK)
+    public String created() {
+        return "created";
     }
 }

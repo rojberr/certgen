@@ -44,11 +44,10 @@ public class GenerateService implements GenerateUseCase {
     public static final String CERTIFICATES_FILES_PATH = "createdCerts";
     private final String KEY_ALGORITHM = "RSA";
     private final int RSA_KEY_SIZE = 2048;
-    private final String SIGNATURE_ALGORITHM = "SHA256withRSA";
 
     @Override
     @SneakyThrows
-    public void generate(
+    public String generate(
             String version,
             BigDecimal serialNumber,
             String signatureAlgorithm,
@@ -80,6 +79,8 @@ public class GenerateService implements GenerateUseCase {
 
         saveToDerFile(holder);
         saveToPemFile(holder);
+
+        return new JcaX509CertificateConverter().getCertificate(holder).toString();
     }
 
     public X509CertificateHolder generateV3Certificate(
@@ -128,7 +129,7 @@ public class GenerateService implements GenerateUseCase {
         certificate.addExtension(Extension.extendedKeyUsage, false, usageEx.getEncoded());
 
         // build BouncyCastle certificate
-        ContentSigner signer = new JcaContentSignerBuilder(SIGNATURE_ALGORITHM).build(keyPair.getPrivate());
+        ContentSigner signer = new JcaContentSignerBuilder(signatureAlgorithm).build(keyPair.getPrivate());
         X509CertificateHolder holder = certificate.build(signer);
 
         return holder;

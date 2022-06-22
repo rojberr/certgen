@@ -4,6 +4,7 @@ import dev.drzymala.certgen.generator.application.port.GenerateUseCase;
 import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -16,9 +17,11 @@ public class GenerateController {
 
     private final GenerateUseCase generator;
 
-    @GetMapping("/generateX509")
-    @ResponseStatus(HttpStatus.OK)
-    public HttpStatus generateX509(
+    @GetMapping(
+            value = "/generateX509",
+            produces = MediaType.TEXT_PLAIN_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    public @ResponseBody String generateX509(
             @RequestParam(value = "version", required = false) String version,
             @RequestParam(value = "serialNumber", required = false) BigDecimal serialNumber,
             @RequestParam(value = "signatureAlgorithm", required = false) String signatureAlgorithm,
@@ -27,9 +30,9 @@ public class GenerateController {
             @RequestParam(value = "issuer", required = false) String issuer,
             @RequestParam(value = "validFrom", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date validFrom,
             @RequestParam(value = "validTill", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date validTill,
-            @RequestParam(value = "subject", required = false) String subject
-    ) {
-        generator.generate(version,
+            @RequestParam(value = "subject", required = false) String subject) {
+
+        return generator.generate(version,
                 serialNumber,
                 signatureAlgorithm,
                 keySize,
@@ -38,6 +41,5 @@ public class GenerateController {
                 validFrom,
                 validTill,
                 subject);
-        return HttpStatus.OK;
     }
 }
