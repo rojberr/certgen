@@ -14,26 +14,34 @@ in the process of creation for a user unskilled in programming.
 
 [Install Docker](https://docs.docker.com/get-docker/) on your system and build an image by typing: 
 
-> docker build . -t certgen-docker1  
+```bash
+docker build . -t certgen-docker1  
+```
 
 Then run the created Docker image by typing:
 
-> docker run -p 8081:8081 certgen-docker1 -name certgen
+```bash
+docker run -p 8081:8081 certgen-docker1 -name certgen
+```
 
 From now on a self hosted API should be running on your system.
 
 To create a X509 certificate use a simple webpage under:
-> http://localhost:8081/generateX509
+```bash
+http://localhost:8081/generateX509
+```
 
-or send an http API request as follows:
-> http://localhost:8081/generateX509?
-> version=v3&
-> rsaKeySize=2048&
-> commonName=Example+name&
-> country=DE&
-> validFrom=1011-01-01&
-> validTill=1010-01-01&
-> distinguishedName=...
+or send a http API request as follows:
+```bash
+http://localhost:8081/generateX509?\
+version=v3&\
+rsaKeySize=2048&\
+commonName=Example+name&\
+country=DE&\
+validFrom=1011-01-01&\
+validTill=1010-01-01&\
+distinguishedName=...
+```
 
 The program will save created .pem and .der files in the project root folder!
 
@@ -41,15 +49,17 @@ The program will save created .pem and .der files in the project root folder!
 
 To run Jenkins Docker container and do the tests automatically you can use my other repo:
 
-`git clone https://github.com/rojberr/build-your-repo-with-jenkins-container.git`
+```bash
+git clone https://github.com/rojberr/build-your-repo-with-jenkins-container.git
 
-`cd build-your-repo-with-jenkins-container`
+cd build-your-repo-with-jenkins-container
 
-`git checkout poject/rojberr/certgen`
+git checkout poject/rojberr/certgen
 
-`./gradlew build docker dockerRun`
+./gradlew build docker dockerRun
+```
 
-This will create preconfigured Jenkins container and you will be able to access it under localhost:8081 and see test results.
+This will create preconfigured Jenkins container, and you will be able to access it under localhost:8081 and see test results.
 
 ## Swagger - API Documentation
 
@@ -59,4 +69,4 @@ A dependency was added that creates Swagger API page automatically. To access it
 ## Need further support?
 Contact me if you need help at rojberr@outlook.com .
 
-I'am using hexagonal architecture for Java class organization.
+I am using hexagonal architecture for Java class organization.
