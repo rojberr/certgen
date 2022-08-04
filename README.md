@@ -33,7 +33,7 @@ http://localhost:8081/generateX509
 
 or send a http API request as follows:
 ```bash
-http://localhost:8081/generateX509?\
+curl http://localhost:8081/generateX509?\
 version=v3&\
 rsaKeySize=2048&\
 commonName=Example+name&\
