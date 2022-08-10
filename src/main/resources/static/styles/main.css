@@ -1,0 +1,217 @@
+.certgen__header {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 0 25%;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 15vh;
+    min-height: 150px;
+    position: relative;
+}
+
+.certgen__header.header-oauth {
+    background:
+            linear-gradient(
+                    rgba(1, 87, 155, 0.95),
+                    rgba(1, 87, 155, 0.75)
+            );
+}
+
+.certgen__header.header-oidc {
+    background:
+            linear-gradient(
+                    rgba(247, 140, 64, 0.95),
+                    rgba(247, 140, 64, 0.75)
+            );
+}
+
+.certgen__header-content {
+    max-width: 65%;
+    text-align: center;
+    padding: 1em;
+}
+
+.certgen__author {
+    position: fixed;
+    top: 0;
+    right: 10px;
+}
+
+.certgen__author a {
+    color: white;
+}
+
+.certgen__author a:hover {
+    color: #ffd86f;
+}
+
+.certgen__body {
+    padding: 3em 0;
+}
+
+.debug__form--output {
+    font-size: 1rem;
+    word-wrap: break-word;
+}
+
+.debug__form-submit {
+    display: flex;
+    justify-content: center;
+    margin-top: 1em;
+}
+
+.debug__form-submit--button {
+    width: 50%;
+    border-radius: 4px;
+}
+
+.certgen__footer {
+    background-color: #eee;
+    display: flex;
+    justify-content: center;
+}
+
+.certgen__footer span {
+    padding: 1em;
+}
+
+.debug__callback-header {
+    padding-bottom: 2em;
+}
+
+.debug__callback-header h1 {
+    margin-bottom: 30px;
+}
+
+.debug__callback-header h2 {
+    margin-bottom: 20px;
+}
+
+.form-group {
+    display: block;
+    padding-right: 3em;
+    margin-bottom: 0;
+}
+
+.form-group-inline {
+    display: flex;
+}
+
+.md-form .form-group-label {
+    position: relative;
+    margin-bottom: 2rem;
+}
+
+.md-form .select-label {
+    position: relative;
+    padding-left: 0.5em;
+    cursor: pointer;
+    display: inline-block;
+    height: 25px;
+    line-height: 25px;
+    font-size: 1rem;
+    top: 0;
+}
+
+.fa-info-circle {
+    margin-right: 0.3em;
+    color: rgba(255,255,255, 0.6)
+}
+
+.card {
+    margin-bottom: 1.8rem;
+}
+
+.card-header {
+    padding: 1em 1.5em 0.5em;
+    color: white;
+    border-radius: 0 !important;
+    border-width: 0;
+    background-color: #888;
+    z-index: 2;
+}
+
+.card-body {
+    padding: 1.8rem 0 0.8rem 0;
+    margin: 0 1em;
+}
+
+.card-text {
+    font-size: .9rem;
+    color: #747373;
+}
+
+.debug__callback {
+    padding: 2em 0;
+    max-width: 60%;
+}
+
+.debug__callback-info {
+    padding-bottom: 2em;
+}
+
+.code-block {
+    background-color: rgba(0, 0, 0, 0.80);
+    font-family: Consolas, monospace;
+    padding: 20px;
+    position: relative;
+    margin: 1em 0;
+    word-wrap: break-word;
+    line-height: 24px;
+}
+
+.code-block[title] {
+    padding-top: 56px;
+}
+
+.code-block:before {
+    font-family: Roboto, sans-serif;
+    font-size: 17px;
+    line-height: 40px;
+    content: attr(title);
+    color: white;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 0;
+    text-indent: 15px;
+    background-color: #777;
+}
+
+.code-block.success:before {
+    background: #4CAF50
+}
+
+.code-block.next-step:before {
+    background-color: #FFA65A;
+}
+
+.code-block.error:before {
+    background-color: #FF5D50;
+}
+
+.code-line {
+    display: block;
+    margin-bottom: -6px;
+}
+
+.code-line:nth-child(n+2) {
+    padding-top: 4px;
+}
+
+.code-block .code-line-param:nth-child(n+2) {
+    margin-left: 20px;
+}
+
+.code-block pre {
+    color: inherit
+}
+
+.bottom-right {
+    position: absolute;
+    right: 3px;
+    bottom: 3px;
+}
