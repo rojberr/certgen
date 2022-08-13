@@ -16,7 +16,7 @@ public class CertgenSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         http
                 .authorizeRequests()
-                .mvcMatchers(HttpMethod.GET, "/generateX509", "/swagger-ui.html").permitAll()
+                .mvcMatchers(HttpMethod.GET, "/generateX509**", "/swagger-ui.html", "/index**").permitAll()
                 .and()
                 .httpBasic();
 

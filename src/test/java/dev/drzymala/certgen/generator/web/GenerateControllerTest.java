@@ -10,8 +10,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -28,7 +26,6 @@ class GenerateControllerTest {
                                 "+Zertificon+Test&basicConstraints=Subject+Type%3DEnd+EntityPath+Length+Constraint%3DNone&" +
                                 "keyUsage=Digital+Signature%2C+Key+Encipherment+%28a0%29")
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
                 .andReturn();
     }
 }
