@@ -45,21 +45,19 @@ distinguishedName=...
 
 The program will save created .pem and .der files in the project root folder!
 
-## Running Jenkins
+## Pushing to your DockerHub
 
-To run Jenkins Docker container and do the tests automatically you can use my other repo:
+To automatically build this image and push it to your DockerHub do the following:
 
+- login:
 ```bash
-git clone https://github.com/rojberr/build-your-repo-with-jenkins-container.git
-
-cd build-your-repo-with-jenkins-container
-
-git checkout poject/rojberr/certgen
-
-./gradlew build docker dockerRun
+docker login
 ```
 
-This will create preconfigured Jenkins container, and you will be able to access it under localhost:8081 and see test results.
+- And then push it to the DockerHub:
+```bash
+./gradlew dockerPush
+```
 
 ## Swagger - API Documentation
 
