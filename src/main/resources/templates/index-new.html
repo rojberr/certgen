@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Certificate Generator</title>
+
+    <link rel="apple-touch-icon" sizes="180x180" th:href="@{/images/apple-touch-icon.png}">
+    <link rel="icon" type="image/png" sizes="32x32" th:href="@{/images/favicon-32x32.png}">
+    <link rel="icon" type="image/png" sizes="16x16" th:href="@{/images/favicon-16x16.png}">
+    <link rel="manifest" th:href="@{/js/manifest.json}" >
+    <link rel="mask-icon" th:href="@{/images/safari-pinned-tab.svg}" color="#5bbad5">
+    <meta name="theme-color" content="#ffffff">
+
+
+    <meta name="description" content="Create any X.609 certificates to test or debug later. This free tool makes it easy to create X.509 certificates." />
+    <meta property="og:type" content="website" />
+    <meta property="og:description" content="Create any X.609 certificates to test or debug later. This free tool makes it easy to create X.509 certificates." />
+    <meta property="og:title" content="Certgen Certificate Generator" />
+    <meta property="og:image" th:content="@{/images/gear-sm.png}" />
+    <meta property="og:url" content="https://certgenenerator.herokuapp.com/" />
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.3.2/css/mdb.min.css" integrity="sha256-HSciL+lazQcMW++cz2zjsrvhGmQk1mh2nzXl/kqTSjY=" crossorigin="anonymous" />
+
+    <link rel="stylesheet" th:href="@{/styles/main.css}" />
+
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-106432346-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments)};
+        gtag('js', new Date());
+
+        gtag('config', 'UA-106432346-1');
+    </script>
+
+
+    <script>
+        window.tenant = 'oidc';
+    </script>
+</head>
+
+<body>
+
+<header class="certgen__header header-oidc">
+    <div class="certgen__header-content">
+        <h1>
+            <strong>X.509 Certificate</strong> &lt;generator/&gt;
+        </h1>
+        <p>
+            Send X.509 certificate requests and save results.
+        </p>
+        <span class="certgen__author">
+          <small>
+            <a href="https://drzymala.dev">
+              <i class="fa fa-code"></i>
+              Created by rojberr 👷
+            </a>
+          </small>
+        </span>
+    </div>
+</header>
+
+<div>
+
+
+    <div id="home-view">
+
+        <div class="container certgen__body" id="form-component">
+            <form class="certgen__form">
+                <div class="row">
+                    <div class="col-7">
+                        <div class="md-form">
+                            <label for="serialNumber">
+                                Serial number <span class="required-text">(required)</span>
+                            </label>
+                            <input type="text" id="serialNumber" class="form-control"
+                                   v-model="serialNumber" v-on:focus="showInfo" v-on:input="saveParameters" required />
+                        </div>
+
+                        <div class="md-form">
+                            <label for="redirectUri">
+                                Signature algorithm<span class="required-text">(fixed for now)</span>
+                            </label>
+                            <input type="text" id="redirectUri" class="form-control"
+                                   v-model="redirectUri" v-on:focus="showInfo" v-on:input="saveParameters" required />
+                        </div>
+
+                        <div class="md-form">
+                            <label for="clientId">
+                                Key size <span class="required-text">(required)</span>
+                            </label>
+                            <input type="text" id="clientId" class="form-control"
+                                   v-model="clientId" v-on:focus="showInfo" v-on:input="saveParameters" required />
+                        </div>
+
+                        <div class="md-form">
+                            <label for="scopes">
+                                Signature HASH algorithm <span class="required-text">(fixed for now)</span>
+                            </label>
+                            <input type="text" id="scopes" class="form-control"
+                                   v-model="scopes" v-on:focus="showInfo" v-on:input="saveParameters" required />
+                        </div>
+
+                        <div class="md-form">
+                            <label for="state">
+                                Issuer
+                            </label>
+                            <input type="text" id="state" class="form-control"
+                                   v-model="state" v-on:focus="showInfo" v-on:input="saveParameters" />
+                        </div>
+
+                        <div class="md-form">
+                            <label for="validity">
+                                Valid from
+                            </label>
+                            <input type="text" id="validity" class="form-control"
+                                   v-model="validity" v-on:focus="showInfo" v-on:input="saveParameters" />
+                        </div>
+
+                        <div class="md-form">
+                            <label for="validity">
+                                Valid till
+                            </label>
+                            <input type="text" id="validity" class="form-control"
+                                   v-model="validity" v-on:focus="showInfo" v-on:input="saveParameters" />
+                        </div>
+
+                        <div class="md-form">
+                            <label for="validity">
+                                Subject
+                            </label>
+                            <input type="text" id="validity" class="form-control"
+                                   v-model="validity" v-on:focus="showInfo" v-on:input="saveParameters" />
+                        </div>
+
+                        <div class="md-form">
+                            <label for="nonce">
+                                Basic Constraints
+                            </label>
+                            <input type="text" id="nonce" class="form-control"
+                                   v-model="nonce" v-on:focus="showInfo" v-on:input="saveParameters" />
+                        </div>
+                    </div>
+
+                    <div class="col-5">
+                        <info-card v-show="selected === 'serialNumber'" title="Serial Number RFC 5280">
+                            <p>The <b>serial number</b> MUST be a positive integer assigned by the CA to
+                                each certificate. It MUST be unique for each certificate issued by a
+                                given CA (i.e., the issuer name and serial number identify a unique
+                                certificate).  CAs MUST force the serialNumber to be a non-negative
+                                integer.</p>
+                            <p>Given the uniqueness requirements above, serial numbers can be
+                                expected to contain long integers.  <b>Certificate users MUST be able to
+                                handle serialNumber values up to 20 octets.</b> Conforming CAs MUST NOT
+                                use serialNumber values longer than 20 octets.</p>
+                            <p>Note: Non-conforming CAs may issue certificates with serial numbers
+                                that are negative or zero.  Certificate users SHOULD be prepared to
+                                gracefully handle such certificates.</p>
+                        </info-card>
+
+                        <info-card v-show="selected === 'redirectUri'" title="Signature Algorithm">
+                            <p>The <b>signatureAlgorithm</b> field contains the algorithm identifier for
+                                the algorithm used by the CRL issuer to sign the CertificateList.
+                                The field is of type AlgorithmIdentifier, which is defined in Section
+                                4.1.1.2.  [RFC3279], [RFC4055], and [RFC4491] list supported
+                                algorithms for this specification, but other signature algorithms MAY
+                                also be supported..</p>
+                        </info-card>
+
+                        <info-card v-show="selected === 'clientId'" title="Client ID">
+                            <p>
+                                Every client (website or mobile app) is identified by a <b>client ID</b>.
+                                Unlike a client secret, the client ID is a public value that does not have to be protected.
+                            </p>
+                        </info-card>
+
+                        <info-card v-show="selected === 'scopes'" title="Scope">
+                            <p>
+                                Clients can request additional information or permissions via <b>scopes</b>.
+                                The <code>openid</code> scope is the only required scope.                        </p>
+                            <p>
+                                The OpenID Connect spec defines some <a href="http://openid.net/specs/openid-connect-core-1_0.html#ScopeClaims">standard scopes</a>,
+                                and applications can define their own custom scopes as well.
+                            </p>
+                        </info-card>
+
+                        <info-card v-show="selected === 'state'" title="State">
+                            <p>The <b>state</b> is an optional value that is carried through the whole flow and returned to the client.</p>
+                            <p>It's common to use state to store an anti-forgery token that can be verified after the login flow is complete. Another common use is storing the location the user should be redirected to after logging in.</p>
+                        </info-card>
+
+                        <info-card v-show="selected === 'validity'" title="Validity">
+                            <p>Time <b>Validity</b> (or <b>c</b>ertificate validity <b>periodnce</b>)
+                                is the time interval during which the
+                                CA warrants that it will maintain information about the status of the
+                                certificate.  The field is represented as a SEQUENCE of two dates:
+                                the date on which the certificate validity period begins (notBefore)
+                                and the date on which the certificate validity period ends
+                                (notAfter).  Both notBefore and notAfter may be encoded as UTCTime or
+                                <a href="https://www.rfc-editor.org/rfc/rfc5280.html#section-4.1.2.5">GeneralizedTime</a>. </p>
+                        </info-card>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-7">
+                        <div class="md-form">
+                            <label for="responseType" class="form-group-label">
+                                Key usage <span class="required-text">(choose freely)</span>
+                            </label>
+                            <div class="form-group-inline">
+                                <div class="form-group">
+                                    <input type="checkbox" id="responseType-code" value="code"
+                                           v-model="responseTypesArray" v-on:focus="showInfo" v-on:click="saveParameters" required>
+                                    <label for="responseType-code" class="select-label">Digital Signature</label>
+                                </div>
+                                <div class="form-group">
+                                    <input type="checkbox" id="responseType-token" value="token"
+                                           v-model="responseTypesArray" v-on:focus="showInfo" v-on:click="saveParameters" required>
+                                    <label for="responseType-token" class="select-label">Key Encipherment (a0)</label>
+                                </div>
+                                <div class="form-group">
+                                    <input type="checkbox" id="responseType-id_token" value="id_token"
+                                           v-model="responseTypesArray" v-on:focus="showInfo" v-on:click="saveParameters" required>
+                                    <label for="responseType-id_token" class="select-label">id_token</label>
+                                </div>
+                            </div>
+
+                            <div class="pt-2" v-show="responseTypesArray.indexOf('code') > -1">
+
+                                <div class="form-group">
+                                    <input type="checkbox" id="use-pkce" v-model="usePkce" v-on:focus="showInfo" v-on:change="saveParameters">
+                                    <label for="use-pkce" class="select-label">Use PKCE?</label>
+                                </div>
+
+                                <div class="form-group-inline" v-show="usePkce">
+                                    <div class="form-group">
+                                        <input v-on:change="saveParameters" v-model="pkceMethod" type="radio" id="pkce-sha256" name="pkce-method" value="S256" />
+                                        <label for="pkce-sha256" class="select-label">SHA-256</label>
+
+                                    </div>
+                                    <div class="form-group">
+                                        <input v-on:change="saveParameters" v-model="pkceMethod" type="radio" id="pkce-plain" name="pkce-method" value="plain" />
+                                        <label for="pkce-plain" class="select-label">plain</label>
+
+                                    </div>
+                                </div>
+                                <div class="row pt-2" v-show="usePkce">
+                                    <div class="col-12">
+                                        <div class="md-form">
+                                            <label for="pkce-code-verifier">Code Verifier</label>
+                                            <input v-on:focus="showInfo" v-on:input="saveParameters" v-model="pkceCodeVerifier" type="text" id="pkce-code-verifier" name="pkce-code-verifier" />
+                                        </div>
+
+                                        <div class="md-form">
+                                            <label for="pkce-code-challenge">Code Challenge</label>
+                                            <input disabled v-model="pkceCodeChallenge" type="text" id="pkce-code-challenge" name="pkce-code-challenge" />
+                                        </div>
+
+                                        <div class="md-form">
+                                            <label for="tokenUri">
+                                                Token URI <span class="required-text">(required for PKCE)</span>
+                                            </label>
+                                            <input type="text" id="tokenUri" class="form-control"
+                                                   v-model="tokenUri" v-on:focus="showInfo" v-on:input="saveParameters" required />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-7">
+                        <info-card v-show="flow === 'code'" title="Authorization code flow">
+                            <p>
+                                The authorization server will respond with a <code>code</code>, which the client can exchange for tokens on a secure channel.
+                                This flow should be used when the application code runs on a secure server (common for MVC and server-rendered pages apps).
+                            </p>
+                        </info-card>
+
+                        <info-card v-show="flow === 'implicit'" title="Implicit flow">
+                            <p>
+                                The authorization server will return an access and/or ID token directly back to the client.
+                                This flow is not as secure as the Authorization Code flow, but supports JavaScript single-page applications that need to directly receive tokens.
+                            </p>
+                        </info-card>
+
+                        <info-card v-show="flow === 'hybrid'" title="Hybrid flow">
+                            <p>
+                                The authorization server will respond with both a <code>code</code> (which the client can exchange for tokens on a secure channel) and an ID token.
+                                A common use case for the hybrid flow is using the <code>code</code> to get an access token on the server, and directly consuming an ID token on the client.
+                            </p>
+                        </info-card>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-7">
+                        <div class="md-form">
+                            <label for="responseMode" class="form-group-label">
+                                Signature algorithm <span class="required-text">(required)</span>
+                            </label>
+                            <div class="form-group-inline">
+                                <div class="form-group">
+                                    <input type="radio" id="responseMode-query" value="query"
+                                           v-model="responseMode" v-on:focus="showInfo" v-on:click="saveParameters" />
+                                    <label for="responseMode-query" class="select-label">query</label>
+                                </div>
+                                <div class="form-group">
+                                    <input type="radio" id="responseMode-formPost" value="form_post"
+                                           v-model="responseMode" v-on:focus="showInfo" v-on:click="saveParameters" />
+                                    <label for="responseMode-formPost" class="select-label">form_post</label>
+                                </div>
+                                <div class="form-group">
+                                    <input type="radio" id="responseMode-fragment" value="fragment"
+                                           v-model="responseMode" v-on:focus="showInfo" v-on:click="saveParameters" />
+                                    <label for="responseMode-fragment" class="select-label">fragment</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <request-uri-code v-bind:uri-object="generatedUriObject"></request-uri-code>
+
+                        <div class="debug__form-submit">
+                            <a v-bind:href="generatedUriObject.encodedUri"
+                               v-bind:class="{ disabled: !generatedUriObject.valid }"
+                               class="btn btn-amber debug__form-submit--button" disabled>
+                                Get Certificate (NOT WORKING FOR NOW)
+                                <i class="fa fa-bolt ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+
+    <script th:src="@{/js/home.js}"></script>
+
+
+    <footer class="certgen__footer">
+        <span>&copy; 2022 <a href="https://drzymala.dev">Jakub Drzymala</a></span>
+    </footer>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+<!-- Bootstrap tooltips -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+<!-- Bootstrap core JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+<!-- MDB core JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.3.2/js/mdb.min.js" integrity="sha256-2Buypeb0Pu614AJISY6JXTri4OLjsLyC69rI3ErnEKw=" crossorigin="anonymous"></script>
+</body>
+
+</html>
