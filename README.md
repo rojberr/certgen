@@ -12,16 +12,16 @@ in the process of creation for a user unskilled in programming.
 
 ## Usage
 
-[Install Docker](https://docs.docker.com/get-docker/) on your system and build an image by typing: 
+[Install Docker](https://docs.docker.com/get-docker/) on your system and build an image using Gradle: 
 
 ```bash
-docker build . -t certgen-docker1  
+./gradlew assemble docker
 ```
 
 Then run the created Docker image by typing:
 
 ```bash
-docker run -p 8081:8081 certgen-docker1 -name certgen
+docker run -p 8081:8081 <image_name> -name certgen
 ```
 
 From now on a self hosted API should be running on your system.

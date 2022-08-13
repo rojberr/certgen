@@ -7,8 +7,9 @@ plugins {
 }
 
 group = 'dev.drzymala'
-version = '0.0.1-SNAPSHOT'
+project.version = scmVersion.version
 sourceCompatibility = '17'
+String imageName = "rojberr/certgen:$version"
 
 configurations {
     compileOnly {
@@ -54,4 +55,10 @@ compileJava {
 java {
     withJavadocJar()
     withSourcesJar()
+}
+
+docker {
+    name imageName
+    files 'build/libs/${bootJar.archiveFileName.get()}'
+    buildArgs([JAR_FILE: bootJar.archiveFileName.get()])
 }
