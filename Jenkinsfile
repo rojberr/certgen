@@ -15,6 +15,14 @@ pipeline {
                 sh './gradlew assemble'
             }
         }
+        stage('Spotbugs static analysis') {
+            options {
+                timeout(time: 20, unit: 'MINUTES')
+            }
+            steps {
+                sh './gradlew spotbugsMain spotbugsTest'
+            }
+        }
         stage('Test') {
             steps {
                 sh 'chmod +x gradlew'

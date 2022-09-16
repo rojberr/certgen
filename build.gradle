@@ -4,6 +4,7 @@ plugins {
     id 'java'
     id 'com.palantir.docker' version '0.34.0'
     id 'pl.allegro.tech.build.axion-release' version '1.14.0'
+    id 'com.github.spotbugs'
 }
 
 group = 'dev.drzymala'
@@ -61,4 +62,11 @@ docker {
     name imageName
     files 'build/libs/${bootJar.archiveFileName.get()}'
     buildArgs([JAR_FILE: bootJar.archiveFileName.get()])
+}
+
+spotbugs {
+    effort = 'max'
+    showStackTraces = true
+    ignoreFailures = true
+    maxHeapSize = '1024m'
 }
